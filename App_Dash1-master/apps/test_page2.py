@@ -1,6 +1,4 @@
 import pandas as pd
-
-import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
@@ -18,8 +16,6 @@ db = mysql.connect(
     database="morroco1",
     auth_plugin='mysql_native_password',
 )
-# df8 = pd.read_sql(
-#     "select distinct(morocco_04_18.dim_region.Region), morocco_04_18.fact_effectifs.EffectifsP_R ,morocco_04_18.fact_effectifs.EvolutionP_R, morocco_04_18.dim_year.Year from morocco_04_18.dim_region, morocco_04_18.fact_effectifs, morocco_04_18.dim_year where morocco_04_18.fact_effectifs.Id_region = morocco_04_18.dim_region.Id_region and morocco_04_18.fact_effectifs.Id_year = morocco_04_18.dim_year.Id_year",con=db)
 
 df8 = pd.read_sql(
     "select distinct(morocco_04_18.dim_region.Region), morocco_04_18.fact_effectifs.EffectifsP_R ,morocco_04_18.fact_effectifs.EffectifsSC_R ,morocco_04_18.fact_effectifs.EffectifsSQ_R ,morocco_04_18.fact_effectifs.EvolutionP_R,morocco_04_18.fact_effectifs.EvolutionSC_R,morocco_04_18.fact_effectifs.EvolutionSQ_R, morocco_04_18.dim_year.Year from morocco_04_18.dim_region, morocco_04_18.fact_effectifs, morocco_04_18.dim_year where morocco_04_18.fact_effectifs.Id_region = morocco_04_18.dim_region.Id_region and morocco_04_18.fact_effectifs.Id_year = morocco_04_18.dim_year.Id_year",con=db)
@@ -30,6 +26,7 @@ a=df8[[ 'EvolutionP_R','EvolutionSC_R','EvolutionSQ_R']].head(0)
 # ---------------------------------------------------------------
 layout = html.Div([
     html.Div([
+    html.Div([
         html.Label(['NYC Calls for Animal Rescue']),
         html.P("years:"),
         dcc.Dropdown(
@@ -37,7 +34,7 @@ layout = html.Div([
             options=[{'value': x, 'label': x}
                      for x in all_years],
             value=all_years[3:], ),
-    ]),
+    ], className="four columns"),
     html.Div([
         html.Label(['test']),
         html.P("education level:"),
@@ -46,12 +43,14 @@ layout = html.Div([
             options=[{'value': x, 'label': x}
                      for x in a.columns],
             value=a.columns[-1:], ),
-    ]),
+    ], className="four columns"),
+    ],className="row"),
+    html.Div([
     html.Div(id='S'),
     html.Div(id='LY'),
     html.Br(),
+    ],className="row"),
     dcc.Graph(id='t1',figure={}),
-    # dcc.Graph(id='t3', figure={}),
     dcc.Graph(id='t4', figure={}),
 ])
 # ---------------------------------------------------------------
@@ -120,19 +119,25 @@ def update_bar_chart(year,edlev):
     mask2 = df8["Year"] == str(int(year)-1)
     df0=df8[mask1]
     df1=df8[mask2]
+    if edlev == 'EvolutionP_R':
+        x = 'EffectifsP_R'
+    if edlev == 'EvolutionSC_R':
+        x = 'EffectifsSC_R'
+    if edlev == 'EvolutionSQ_R':
+        x = 'EffectifsSQ_R'
 
     trace1 = go.Bar(    #setup the chart for Resolved records
         x=df0["Region"].unique(), #x for Resolved records
-        y=df0.groupby("Region")[edlev].agg(sum),#y for Resolved records
+        y=df0.groupby("Region")[x].agg(sum),#y for Resolved records
         marker_color=px.colors.qualitative.Dark24[0],  #color
-        text=df0.groupby("Region")[edlev].agg(sum), #label/text
+        text=df0.groupby("Region")[x].agg(sum), #label/text
         textposition="outside", #text position
         name="Resolved", #legend name
     )
     trace2 = go.Bar(   #setup the chart for Unresolved records
         x=df1["Region"].unique(),
-        y=df1.groupby("Region")[edlev].agg(sum),
-        text=df1.groupby("Region")[edlev].agg(sum),
+        y=df1.groupby("Region")[x].agg(sum),
+        text=df1.groupby("Region")[x].agg(sum),
         marker_color=px.colors.qualitative.Dark24[1],
         textposition="outside",
         name="Unresolved",
