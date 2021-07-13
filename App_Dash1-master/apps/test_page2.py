@@ -112,8 +112,10 @@ def update_bar_chart(year, edlev):
 
 @app.callback(
     Output("t4", "figure"),
-    [Input("years", "value")])
-def update_bar_chart(year):
+    [Input("years", "value"),
+     Input(component_id='el', component_property='value')
+     ])
+def update_bar_chart(year,edlev):
     mask1 = df8["Year"] == year
     mask2 = df8["Year"] == str(int(year)-1)
     df0=df8[mask1]
@@ -121,16 +123,16 @@ def update_bar_chart(year):
 
     trace1 = go.Bar(    #setup the chart for Resolved records
         x=df0["Region"].unique(), #x for Resolved records
-        y=df0.groupby("Region")["EffectifsP_R"].agg(sum),#y for Resolved records
+        y=df0.groupby("Region")[edlev].agg(sum),#y for Resolved records
         marker_color=px.colors.qualitative.Dark24[0],  #color
-        text=df0.groupby("Region")["EffectifsP_R"].agg(sum), #label/text
+        text=df0.groupby("Region")[edlev].agg(sum), #label/text
         textposition="outside", #text position
         name="Resolved", #legend name
     )
     trace2 = go.Bar(   #setup the chart for Unresolved records
         x=df1["Region"].unique(),
-        y=df1.groupby("Region")["EffectifsP_R"].agg(sum),
-        text=df1.groupby("Region")["EffectifsP_R"].agg(sum),
+        y=df1.groupby("Region")[edlev].agg(sum),
+        text=df1.groupby("Region")[edlev].agg(sum),
         marker_color=px.colors.qualitative.Dark24[1],
         textposition="outside",
         name="Unresolved",
