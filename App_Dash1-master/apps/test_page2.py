@@ -45,7 +45,9 @@ layout = html.Div([
                      for x in a.columns],
             value=a.columns[-1:], ),
     ]),
-
+    html.Div(id='S'),
+    html.Div(id='LY'),
+    html.Br(),
     dcc.Graph(id='t1',figure={}),
 ])
 # ---------------------------------------------------------------
@@ -61,4 +63,47 @@ def update_bar_chart(year,edlev):
     fig2 = ff.create_table(df4, height_constant=27)
     fig2.layout.width = 600
     return fig2
+
+
+@app.callback(
+    Output('S', component_property='children'),
+    [Input(component_id='years', component_property='value'),
+     Input(component_id='el', component_property='value')
+     ])
+def update_bar_chart(year, edlev):
+
+    mask = df8["Year"] == year
+    df3 = df8[mask]
+    df4 = df3[['Region', 'EffectifsSC_R', 'EffectifsP_R', 'EffectifsSQ_R','EvolutionP_R','EvolutionSC_R','EvolutionSQ_R']]
+    if edlev == 'EvolutionP_R':
+        total = df4['EffectifsP_R'].sum()
+        return 'Output: {}'.format(total)
+    if edlev == 'EvolutionSC_R':
+        total = df4['EffectifsSC_R'].sum()
+        return 'Output: {}'.format(total)
+    if edlev == 'EvolutionSQ_R':
+        total = df4['EffectifsSQ_R'].sum()
+        return 'Output: {}'.format(total)
+
+@app.callback(
+    Output('LY', component_property='children'),
+    [Input(component_id='years', component_property='value'),
+     Input(component_id='el', component_property='value')
+     ])
+def update_bar_chart(year, edlev):
+
+    mask = df8["Year"] == str(int(year)-1)
+    df3 = df8[mask]
+    df4 = df3[['Region', 'EffectifsSC_R', 'EffectifsP_R', 'EffectifsSQ_R', 'EvolutionP_R', 'EvolutionSC_R',
+               'EvolutionSQ_R']]
+    if edlev == 'EvolutionP_R':
+        total = df4['EffectifsP_R'].sum()
+        return 'LY: {}'.format(total)
+    if edlev == 'EvolutionSC_R':
+        total = df4['EffectifsSC_R'].sum()
+        return 'LY: {}'.format(total)
+    if edlev == 'EvolutionSQ_R':
+        total = df4['EffectifsSQ_R'].sum()
+        return 'LY: {}'.format(total)
+
 
