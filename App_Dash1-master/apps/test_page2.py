@@ -8,6 +8,8 @@ from dash.dependencies import Input, Output
 import plotly.figure_factory as ff
 import mysql.connector as mysql
 from app import app
+import plotly.graph_objects as go
+import plotly.express as px
 
 db = mysql.connect(
     host='localhost',
@@ -49,6 +51,8 @@ layout = html.Div([
     html.Div(id='LY'),
     html.Br(),
     dcc.Graph(id='t1',figure={}),
+    # dcc.Graph(id='t3', figure={}),
+    dcc.Graph(id='t4', figure={}),
 ])
 # ---------------------------------------------------------------
 @app.callback(
@@ -106,4 +110,40 @@ def update_bar_chart(year, edlev):
         total = df4['EffectifsSQ_R'].sum()
         return 'LY: {}'.format(total)
 
+@app.callback(
+    Output("t4", "figure"),
+    [Input("years", "value")])
+def update_bar_chart(year):
+    mask1 = df8["Year"] == year
+    mask2 = df8["Year"] == str(int(year)-1)
+    df0=df8[mask1]
+    df1=df8[mask2]
 
+    trace1 = go.Bar(    #setup the chart for Resolved records
+        x=df0["Region"].unique(), #x for Resolved records
+        y=df0.groupby("Region")["EffectifsP_R"].agg(sum),#y for Resolved records
+        marker_color=px.colors.qualitative.Dark24[0],  #color
+        text=df0.groupby("Region")["EffectifsP_R"].agg(sum), #label/text
+        textposition="outside", #text position
+        name="Resolved", #legend name
+    )
+    trace2 = go.Bar(   #setup the chart for Unresolved records
+        x=df1["Region"].unique(),
+        y=df1.groupby("Region")["EffectifsP_R"].agg(sum),
+        text=df1.groupby("Region")["EffectifsP_R"].agg(sum),
+        marker_color=px.colors.qualitative.Dark24[1],
+        textposition="outside",
+        name="Unresolved",
+    )
+    data = [trace1, trace2] #combine two charts/columns
+    layout = go.Layout(barmode="group", title="Resolved vs Unresolved") #define how to display the columns
+    fig = go.Figure(data=data, layout=layout)
+    fig.update_layout(
+        title=dict(x=0.5), #center the title
+        xaxis_title="District",#setup the x-axis title
+        yaxis_title="Total", #setup the x-axis title
+        margin=dict(l=20, r=20, t=60, b=20),#setup the margin
+        paper_bgcolor="aliceblue", #setup the background color
+    )
+    fig.update_traces(texttemplate="%{text:.2s}") #text formart
+    return fig
