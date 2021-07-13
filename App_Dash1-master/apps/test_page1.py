@@ -18,15 +18,19 @@ db = mysql.connect(
     auth_plugin='mysql_native_password',
 )
 
+# df8 = pd.read_sql(
+#     "select distinct(morocco_04_18.dim_region.Region), morocco_04_18.fact_effectifs.EffectifsP_R , morocco_04_18.dim_year.Year from morocco_04_18.dim_region, morocco_04_18.fact_effectifs, morocco_04_18.dim_year where morocco_04_18.fact_effectifs.Id_region = morocco_04_18.dim_region.Id_region and morocco_04_18.fact_effectifs.Id_year = morocco_04_18.dim_year.Id_year",
+#     con=db)
 df8 = pd.read_sql(
-    "select distinct(morocco_04_18.dim_region.Region), morocco_04_18.fact_effectifs.EffectifsP_R , morocco_04_18.dim_year.Year from morocco_04_18.dim_region, morocco_04_18.fact_effectifs, morocco_04_18.dim_year where morocco_04_18.fact_effectifs.Id_region = morocco_04_18.dim_region.Id_region and morocco_04_18.fact_effectifs.Id_year = morocco_04_18.dim_year.Id_year",
+    "select distinct(morocco_04_18.dim_region.Region), morocco_04_18.fact_effectifs.EffectifsP_R , morocco_04_18.fact_effectifs.EffectifsSC_R ,morocco_04_18.fact_effectifs.EffectifsSQ_R ,morocco_04_18.dim_year.Year from morocco_04_18.dim_region, morocco_04_18.fact_effectifs, morocco_04_18.dim_year where morocco_04_18.fact_effectifs.Id_region = morocco_04_18.dim_region.Id_region and morocco_04_18.fact_effectifs.Id_year = morocco_04_18.dim_year.Id_year",
     con=db)
-# fig = px.pie(df8, values='EffectifsP_R', names='Region', color_discrete_sequence=px.colors.sequential.Plasma)
+
 all_years = df8["Year"].unique()
-# fig2 = ff.create_table(df8, height_constant=60)
+a=df8[[ 'EffectifsSC_R','EffectifsP_R','EffectifsSQ_R']].head(0)
 
 # ---------------------------------------------------------------
 layout = html.Div([
+        html.Div([
                     html.Div([
                         html.Label(['NYC Calls for Animal Rescue']),
                         html.P("Names:"),
@@ -36,7 +40,17 @@ layout = html.Div([
                                      for x in all_years],
                             value=all_years[3:], ),
 
-                    ]),
+                    ], className="four columns"),
+                    html.Div([
+                        html.Label(['test']),
+                        html.P("education level:"),
+                        dcc.Dropdown(
+                            id='el', style={'height': '50px', 'width': '200px'},
+                            options=[{'value': x, 'label': x}
+                                     for x in a.columns],
+                            value=a.columns[-1:], ),
+                    ], className="four columns"),
+                    ],className="row"),
                     html.Div([
                         html.Div([
                             dcc.Graph(id='t', figure={}),
@@ -56,32 +70,35 @@ layout = html.Div([
 # ---------------------------------------------------------------
 @app.callback(
     Output(component_id='t', component_property='figure'),
-    [Input(component_id='years', component_property='value')])
-def update_bar_chart(year):
+    [Input(component_id='years', component_property='value'),
+     Input(component_id='el', component_property='value')])
+def update_bar_chart(year,edlev):
     mask = df8["Year"] == year
 
-    fig = px.pie(df8[mask], values='EffectifsP_R', names='Region', color_discrete_sequence=px.colors.sequential.Plasma)
+    fig = px.pie(df8[mask], values=edlev, names='Region', color_discrete_sequence=px.colors.sequential.Plasma)
     return fig
 
 @app.callback(
 
     Output(component_id='t2', component_property='figure'),
-    [Input(component_id='years', component_property='value')])
-def update_bar_chart(year):
+    [Input(component_id='years', component_property='value'),
+     Input(component_id='el', component_property='value')])
+def update_bar_chart(year,edlev):
     mask = df8["Year"] == year
     df1 = df8[mask]
-    df2 = df1[['Region', 'EffectifsP_R']]
+    df2 = df1[['Region', edlev]]
     fig2 = ff.create_table(df2, height_constant=23)
     fig2.layout.width = 600
     return fig2
 @app.callback(
 
     Output(component_id='t3', component_property='figure'),
-    [Input(component_id='years', component_property='value')])
-def update_bar_chart(year):
+    [Input(component_id='years', component_property='value'),
+     Input(component_id='el', component_property='value')])
+def update_bar_chart(year,edlev):
     mask = df8["Year"] == str(int(year)-1)
     df1 = df8[mask]
-    df2 = df1[['Region', 'EffectifsP_R']]
+    df2 = df1[['Region', edlev]]
     fig3 = ff.create_table(df2, height_constant=23)
     fig3.layout.width = 600
 
