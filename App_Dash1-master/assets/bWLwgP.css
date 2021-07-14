@@ -131,9 +131,33 @@ body {
   line-height: 1.6;
   font-weight: 400;
   font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: rgb(50, 50, 50); }
+  color: rgb(50, 50, 50);
+  background-color: rgb(253, 242, 524);;
+   }
+/*------------------*/
 
+.banner {
+    height: 75px;
+    margin: 0px -10px 10px;
+ /*   background-color: rgb(66, 196, 247);*/
+   background-color: #B0E3EB;
+    border-radius: 2px;
+}
 
+.banner h2{
+    color: white;
+    padding-top: 10px;
+    margin-left: 2%;
+    display: inline-block;
+}
+
+.banner Img{
+    position: relative;
+    float: right;
+    right: 10px;
+    height: 75px;
+}
+/***************/
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 h1, h2, h3, h4, h5, h6 {

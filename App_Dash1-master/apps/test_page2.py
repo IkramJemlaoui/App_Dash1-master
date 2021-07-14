@@ -3,11 +3,18 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 
+import dash_bootstrap_components as dbc
 import plotly.figure_factory as ff
 import mysql.connector as mysql
 from app import app
 import plotly.graph_objects as go
 import plotly.express as px
+from dash_extensions import Lottie
+
+url_coonections = "https://assets3.lottiefiles.com/packages/lf20_mmuvzslg.json"
+B = "https://assets2.lottiefiles.com/packages/lf20_E0dZz7.json"
+B1 = "https://assets1.lottiefiles.com/packages/lf20_ffpacwo2.json"
+options = dict(loop=True, autoplay=True, rendererSettings=dict(preserveAspectRatio='xMidYMid slice'))
 
 db = mysql.connect(
     host='localhost',
@@ -24,11 +31,16 @@ all_years = df8["Year"].unique()
 a=df8[[ 'EvolutionP_R','EvolutionSC_R','EvolutionSQ_R']].head(0)
 
 # ---------------------------------------------------------------
-layout = html.Div([
+layout = dbc.Container([
+
     html.Div([
     html.Div([
-        html.Label(['NYC Calls for Animal Rescue']),
-        html.P("years:"),
+        html.H2("Rate by year"),
+        html.Img(src="/assets/A.png")
+    ], className="banner"),
+    html.Div([
+    html.Div([
+        html.P("Choose a year:"),
         dcc.Dropdown(
             id='years', style={'height': '40px', 'width': '100px'},
             options=[{'value': x, 'label': x}
@@ -36,8 +48,7 @@ layout = html.Div([
             value=all_years[3:], ),
     ], className="four columns"),
     html.Div([
-        html.Label(['test']),
-        html.P("education level:"),
+        html.P("Education level:"),
         dcc.Dropdown(
             id='el', style={'height': '50px', 'width': '200px'},
             options=[{'value': x, 'label': x}
@@ -46,13 +57,34 @@ layout = html.Div([
     ], className="four columns"),
     ],className="row"),
     html.Div([
-    html.Div(id='S'),
-    html.Div(id='LY'),
+        html.Div([dbc.CardHeader(Lottie(options=options, width="35%", height="25%", url=B))], className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
+        html.Div([dbc.CardHeader(Lottie(options=options, width="25%", height="25%", url=B))], className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
+        html.Div([dbc.CardHeader(Lottie(options=options, width="35%", height="35%", url=url_coonections))], className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
+        html.Br(),
+    ], className="row"),
+
+    html.Div([
+    html.Div(id='S',className="three columns",style={'height': '50px', 'width': '200px','background-color': '#9CDBE7'}),
+    html.Div(id='LY', className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
+    html.Div(id='rate',className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
     html.Br(),
     ],className="row"),
-    dcc.Graph(id='t1',figure={}),
-    dcc.Graph(id='t4', figure={}),
-])
+    html.Br(),
+    html.Br(),
+    html.Br(),
+    html.Div([
+    html.Div(
+        [dcc.Graph(id='t1',figure={}),],
+        className="five columns"
+    ),
+    html.Div(
+        [dcc.Graph(id='t4', figure={}),],
+        className="five columns"
+    ),
+    ],className="row"),
+
+],className="body"
+)],fluid=True)
 # ---------------------------------------------------------------
 @app.callback(
     Output(component_id='t1', component_property='figure'),
@@ -63,7 +95,7 @@ def update_bar_chart(year,edlev):
     mask = df["Year"] == year
     df3 = df[mask]
     df4 = df3[['Region', edlev]]
-    fig2 = ff.create_table(df4, height_constant=27)
+    fig2 = ff.create_table(df4, height_constant=25)
     fig2.layout.width = 600
     return fig2
 
@@ -80,13 +112,13 @@ def update_bar_chart(year, edlev):
     df4 = df3[['Region', 'EffectifsSC_R', 'EffectifsP_R', 'EffectifsSQ_R','EvolutionP_R','EvolutionSC_R','EvolutionSQ_R']]
     if edlev == 'EvolutionP_R':
         total = df4['EffectifsP_R'].sum()
-        return 'Output: {}'.format(total)
+        return total
     if edlev == 'EvolutionSC_R':
         total = df4['EffectifsSC_R'].sum()
-        return 'Output: {}'.format(total)
+        return total
     if edlev == 'EvolutionSQ_R':
         total = df4['EffectifsSQ_R'].sum()
-        return 'Output: {}'.format(total)
+        return total
 
 @app.callback(
     Output('LY', component_property='children'),
@@ -101,13 +133,13 @@ def update_bar_chart(year, edlev):
                'EvolutionSQ_R']]
     if edlev == 'EvolutionP_R':
         total = df4['EffectifsP_R'].sum()
-        return 'LY: {}'.format(total)
+        return total
     if edlev == 'EvolutionSC_R':
         total = df4['EffectifsSC_R'].sum()
-        return 'LY: {}'.format(total)
+        return total
     if edlev == 'EvolutionSQ_R':
         total = df4['EffectifsSQ_R'].sum()
-        return 'LY: {}'.format(total)
+        return total
 
 @app.callback(
     Output("t4", "figure"),
@@ -132,7 +164,7 @@ def update_bar_chart(year,edlev):
         marker_color=px.colors.qualitative.Dark24[0],  #color
         text=df0.groupby("Region")[x].agg(sum), #label/text
         textposition="outside", #text position
-        name="Resolved", #legend name
+        name="Selected year", #legend name
     )
     trace2 = go.Bar(   #setup the chart for Unresolved records
         x=df1["Region"].unique(),
@@ -140,17 +172,28 @@ def update_bar_chart(year,edlev):
         text=df1.groupby("Region")[x].agg(sum),
         marker_color=px.colors.qualitative.Dark24[1],
         textposition="outside",
-        name="Unresolved",
+        name="Previous year ",
     )
     data = [trace1, trace2] #combine two charts/columns
     layout = go.Layout(barmode="group", title="Resolved vs Unresolved") #define how to display the columns
     fig = go.Figure(data=data, layout=layout)
     fig.update_layout(
         title=dict(x=0.5), #center the title
-        xaxis_title="District",#setup the x-axis title
-        yaxis_title="Total", #setup the x-axis title
-        margin=dict(l=20, r=20, t=60, b=20),#setup the margin
-        paper_bgcolor="aliceblue", #setup the background color
+        xaxis_title="Regiongs",#setup the x-axis title
+        yaxis_title="Effectif", #setup the x-axis title
+        margin=dict(l=5, r=5, t=25, b=5),#setup the margin
+        paper_bgcolor="#fdf2ff", #setup the background color
+        width=850,
+        height=500,
     )
     fig.update_traces(texttemplate="%{text:.2s}") #text formart
     return fig
+
+@app.callback(
+    Output('rate', component_property='children'),
+    [Input('LY',component_property='children'),
+     Input('S', component_property='children')
+     ])
+def update_bar_chart(lyear,year):
+    rate = (int(year)-int(lyear))/int(lyear)
+    return 'rate: {}'.format(rate*100)

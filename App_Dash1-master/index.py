@@ -16,7 +16,7 @@ app.layout = html.Div([
         dcc.Link('rate _by year', href='/apps/rate_by'),
     ], className="row"),
     html.Div(id='page-content', children=[]),
-])
+],className="body")
 
 
 @app.callback(Output('page-content', 'children'),

@@ -103,7 +103,3 @@ def update_bar_chart(year,edlev):
     fig3.layout.width = 600
 
     return fig3
-
-app.css.append_css({
-    'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
-})
