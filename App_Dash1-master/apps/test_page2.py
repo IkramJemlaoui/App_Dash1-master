@@ -59,14 +59,14 @@ layout = dbc.Container([
     html.Div([
         html.Div([dbc.CardHeader(Lottie(options=options, width="35%", height="25%", url=B))], className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
         html.Div([dbc.CardHeader(Lottie(options=options, width="25%", height="25%", url=B))], className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
-        html.Div([dbc.CardHeader(Lottie(options=options, width="35%", height="35%", url=url_coonections))], className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
+        html.Div([dbc.CardHeader(Lottie(options=options, width="25%", height="25%", url=url_coonections))], className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
         html.Br(),
     ], className="row"),
 
     html.Div([
-    html.Div(id='S',className="three columns",style={'height': '50px', 'width': '200px','background-color': '#9CDBE7'}),
-    html.Div(id='LY', className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
-    html.Div(id='rate',className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white'}),
+    html.Div(id='S',className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white','color':'#9CDBE7','text-align':'center','vertical-align': 'middle','line-height': '50px'}),
+    html.Div(id='LY', className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white','color':'#9CDBE7','text-align':'center','vertical-align': 'middle','line-height': '50px'}),
+    html.Div(id='rate',className="three columns",style={'height': '50px', 'width': '200px','background-color': 'white','color':'#9CDBE7','text-align':'center','vertical-align': 'middle','line-height': '50px'}),
     html.Br(),
     ],className="row"),
     html.Br(),
@@ -166,6 +166,7 @@ def update_bar_chart(year,edlev):
         textposition="outside", #text position
         name="Selected year", #legend name
     )
+
     trace2 = go.Bar(   #setup the chart for Unresolved records
         x=df1["Region"].unique(),
         y=df1.groupby("Region")[x].agg(sum),
@@ -174,6 +175,7 @@ def update_bar_chart(year,edlev):
         textposition="outside",
         name="Previous year ",
     )
+
     data = [trace1, trace2] #combine two charts/columns
     layout = go.Layout(barmode="group", title="Resolved vs Unresolved") #define how to display the columns
     fig = go.Figure(data=data, layout=layout)
@@ -196,4 +198,4 @@ def update_bar_chart(year,edlev):
      ])
 def update_bar_chart(lyear,year):
     rate = (int(year)-int(lyear))/int(lyear)
-    return 'rate: {}'.format(rate*100)
+    return round(rate*100,1)
