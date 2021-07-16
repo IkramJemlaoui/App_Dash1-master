@@ -20,7 +20,6 @@ options = dict(loop=True, autoplay=True, rendererSettings=dict(preserveAspectRat
 SIDEBAR_STYLE = {
     "background-color": "#f8f9fa",
 }
-
 # padding for the page content
 # CONTENT_STYLE = {
 #     "margin-left": "18rem",
@@ -61,8 +60,6 @@ app.layout = html.Div([
     html.Div(id='page-content', children=[]),
 
 ],className="body")
-
-
 @app.callback(Output('page-content', 'children'),
               [Input('url', 'pathname')])
 def display_page(pathname):
@@ -74,7 +71,6 @@ def display_page(pathname):
         return test_page3.layout
     else:
         return home_page.layout
-
 
 
 

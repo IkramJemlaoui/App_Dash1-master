@@ -18,9 +18,6 @@ db = mysql.connect(
 df=pd.read_sql("select distinct(morocco_04_18.dim_region.Region), morocco_04_18.fact_effectifs.EffectifsP_R ,morocco_04_18.fact_effectifs.EvolutionP_R, morocco_04_18.dim_year.Year,morocco_04_18.dim_region.Latitude,morocco_04_18.dim_region.Longitude from morocco_04_18.dim_region, morocco_04_18.fact_effectifs, morocco_04_18.dim_year where  morocco_04_18.fact_effectifs.Id_region = morocco_04_18.dim_region.Id_region  and morocco_04_18.fact_effectifs.Id_year = morocco_04_18.dim_year.Id_year",con=db)
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 df['text'] = df['Region'] + ' ' + 'Rate: ' +' '+ df['EvolutionP_R'].astype(str)
-
-
-
 layout = html.Div([
 
     dcc.Graph(id='the_graph'),
@@ -32,7 +29,6 @@ layout = html.Div([
     ],style={'text-align': 'center'}),
 
 ])
-
 #---------------------------------------------------------------
 @app.callback(
 
