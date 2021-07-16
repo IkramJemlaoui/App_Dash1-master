@@ -35,10 +35,6 @@ layout = dbc.Container([
 
     html.Div([
     html.Div([
-        html.H2("Rate by year"),
-        html.Img(src="/assets/A.png")
-    ], className="banner"),
-    html.Div([
     html.Div([
         html.P("Choose a year:"),
         dcc.Dropdown(
