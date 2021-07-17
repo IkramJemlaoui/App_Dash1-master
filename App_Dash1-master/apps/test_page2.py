@@ -121,7 +121,7 @@ def update_bar_chart(year,edlev):
      ])
 def update_bar_chart(year, edlev):
 
-    mask = df8["Year"] == year
+    mask = df8["Year"] == str(year)
     df3 = df8[mask]
     df4 = df3[['Region', 'EffectifsSC_R', 'EffectifsP_R', 'EffectifsSQ_R','EvolutionP_R','EvolutionSC_R','EvolutionSQ_R']]
     if edlev == 'EvolutionP_R':
