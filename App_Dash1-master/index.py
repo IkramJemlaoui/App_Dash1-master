@@ -32,13 +32,13 @@ sidebar = html.Div(
         dbc.Nav(
             [
                 dbc.NavLink("Home", href="/apps/", active="exact"),
-                dbc.NavLink("Page 1", href="/apps/Eff_by", active="exact"),
+                # dbc.NavLink("Page 1", href="/apps/Eff_by", active="exact"),
                 dbc.NavLink("Page 2", href="/apps/rate_by", active="exact"),
-                dbc.NavLink("Page 3", href="/apps/map", active="exact"),
+                # dbc.NavLink("Page 3", href="/apps/map", active="exact"),
                 dbc.DropdownMenu(
                     [dbc.DropdownMenuItem(dbc.NavLink("Page 1", href="/apps/Eff_by", active="exact"),),
-                     dbc.DropdownMenuItem("Item 2")],
-                    label="Dropdown",
+                     dbc.DropdownMenuItem(dbc.NavLink("Page 3", href="/apps/map", active="exact"),)],
+                    label="Region",
                     nav=True,
                 ),
             ],

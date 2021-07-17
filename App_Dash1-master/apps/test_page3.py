@@ -9,6 +9,13 @@ from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 import mysql.connector as mysql
 import plotly.express as px
+import dash_bootstrap_components as dbc
+from dash_extensions import Lottie
+
+url_coonections = "https://assets3.lottiefiles.com/packages/lf20_mmuvzslg.json"
+B = "https://assets2.lottiefiles.com/packages/lf20_E0dZz7.json"
+B1 = "https://assets1.lottiefiles.com/packages/lf20_ffpacwo2.json"
+options = dict(loop=True, autoplay=True, rendererSettings=dict(preserveAspectRatio='xMidYMid slice'))
 db = mysql.connect(
     host='localhost',
     user='root',
@@ -40,6 +47,31 @@ html.Br(),
 
 html.Hr(),
 html.Br(),
+
+    html.Div([
+        html.H1("Selected year", className="five columns",
+                style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
+                       'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+                       'font-size': '20px'}),
+        html.Div("Previous year", className="five columns",
+                 style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
+                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+                        'font-size': '20px'}),
+        html.Div("RATE OF EVOLUTION", className="five columns",
+                 style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
+                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+                        'font-size': '15px'}),
+        html.Br(),
+    ], className="row", style={'width': '50%', 'margin': '0 auto'}),
+    html.Div([
+        html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
+                 style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
+        html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
+                 style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
+        html.Div([dbc.CardHeader(Lottie(options=options, width="30%", height="25%", url=url_coonections))],
+                 className="three columns", style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
+        html.Br(),
+    ], className="row", style={'width': '50%', 'margin': '0 auto'}),
     html.Div([
         html.Div(id='S1', className="three columns",
                  style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
@@ -57,9 +89,9 @@ html.Br(),
     ], className="row", style={'width': '50%', 'margin': '0 auto'}),
 html.Hr(),
 html.Br(),
-
+    html.Div([dcc.Graph(id='t7',figure={})]),
    html.Div([   html.Div([dcc.Graph(id='the_graph')],className="four columns"),
-                html.Div([dcc.Graph(id='t6', figure={})],className="four columns"),
+                html.Div([dcc.Graph(id='t6', figure={})],className="four columns",style={'height': '200px', 'width': '200px'}),
              ],className="row"),
 
 
@@ -115,12 +147,12 @@ def update_map(num_clicks,val_selected,edlev):
                 scope='africa',
                 showland=True,
                 landcolor="rgb(250, 250, 250)",
-                subunitcolor="rgb(217, 217, 217)",
-                countrycolor="rgb(217, 217, 217)",
+                subunitcolor="red",
+                countrycolor="red",
                 countrywidth=0.5,
                 subunitwidth=0.5
             ),
-            margin=dict(l=60, r=60, t=50, b=50)
+            margin=dict(l=30, r=30, t=20, b=20)
         )
 
         return  fig
@@ -184,7 +216,7 @@ def update_bar_chart(num_clicks,val_selected,edlev):
     [Input(component_id='submit_button', component_property='n_clicks')],
     [State(component_id='input_state', component_property='value')],
     [State(component_id='el', component_property='value')],)
-def update_bar_chart(num_clicks,val_selected,edlev):
+def update_sum_eff_ly(num_clicks,val_selected,edlev):
 
     mask = df["Year"] == str(int(val_selected)-1)
     df3 = df[mask]
@@ -205,7 +237,7 @@ def update_bar_chart(num_clicks,val_selected,edlev):
     [Input(component_id='submit_button', component_property='n_clicks')],
     [State(component_id='input_state', component_property='value')],
     [State(component_id='el', component_property='value')],)
-def update_bar_chart(num_clicks,val_selected,edlev):
+def update_sum_eff_Sy(num_clicks,val_selected,edlev):
 
     mask = df["Year"] == str(int(val_selected))
     df3 = df[mask]
@@ -222,13 +254,29 @@ def update_bar_chart(num_clicks,val_selected,edlev):
         return total
 
 
-
-
 @app.callback(
     Output('rate1', component_property='children'),
     [Input('LY1',component_property='children'),
      Input('S1', component_property='children')
      ])
-def update_bar_chart(lyear,year):
+def update_rate(lyear,year):
     rate = (int(lyear)-int(year))/int(year)
     return round(rate*100,1)
+
+
+@app.callback(
+    Output(component_id='t7', component_property='figure'),
+    [Input(component_id='submit_button', component_property='n_clicks')],
+    [State(component_id='input_state', component_property='value')],
+    [State(component_id='el', component_property='value')],)
+def update_pie_chart(num_clicks,val_selected,edlev):
+    mask = df["Year"] == str(val_selected)
+    if edlev == 'EvolutionP_R':
+        x1 = 'EffectifsP_R'
+    if edlev == 'EvolutionSC_R':
+        x1 = 'EffectifsSC_R'
+    if edlev == 'EvolutionSQ_R':
+        x1 = 'EffectifsSQ_R'
+
+    fig = px.pie(df[mask], values=x1, names='Region', color_discrete_sequence=px.colors.sequential.Plasma)
+    return fig
