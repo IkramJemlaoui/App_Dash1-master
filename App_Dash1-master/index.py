@@ -29,35 +29,38 @@ SIDEBAR_STYLE = {
 
 sidebar = html.Div(
     [
-        dbc.Nav(
+        dbc.Navbar(
             [
                 dbc.NavLink("Home", href="/apps/", active="exact"),
                 # dbc.NavLink("Page 1", href="/apps/Eff_by", active="exact"),
                 dbc.NavLink("Page 2", href="/apps/rate_by", active="exact"),
                 # dbc.NavLink("Page 3", href="/apps/map", active="exact"),
                 dbc.DropdownMenu(
-                    [dbc.DropdownMenuItem(dbc.NavLink("Page 1", href="/apps/Eff_by", active="exact"),),
-                     dbc.DropdownMenuItem(dbc.NavLink("Page 3", href="/apps/map", active="exact"),)],
+                    [dbc.DropdownMenuItem(dbc.NavLink("Page 1", href="/apps/Eff_by", active="exact"), style={'font-size': '20px'}),
+                     dbc.DropdownMenuItem(dbc.NavLink("Page 3", href="/apps/map", active="exact"),style={'font-size': '20px'})],
                     label="Region",
                     nav=True,
+                    style={'font-size': '20px'}
                 ),
             ],
-            vertical=False,
-            pills=True,
+            expand='md',
+            color="dark",
+            dark=True,
+            style={'font-size': '20px'}
         ),
     ],
-    style=SIDEBAR_STYLE,
+
 )
 
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
-    html.Div([
+    dbc.Row(dbc.Col(html.Div([
         html.H2("Rate by year"),
         html.Img(src="/assets/A.png")
-    ], className="banner"),
-    html.Div(sidebar),
-    html.Div(id='page-content', children=[]),
+    ], className="banner"),),),
+   dbc.Row(dbc.Col(html.Div(sidebar),),),
+   dbc.Row(dbc.Row(html.Div(id='page-content', children=[]),),),
 
 ],className="body")
 @app.callback(Output('page-content', 'children'),
