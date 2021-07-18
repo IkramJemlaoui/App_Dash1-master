@@ -33,64 +33,158 @@ html.Hr(),
 html.Br(),
 dbc.Row(dbc.Col([
 
-            dcc.Dropdown(
-                id='el',
-                options=[
-                    {'label': 'Primary school', 'value': 'P'},
-                    {'label': 'Secondary school', 'value': 'S'},
-                    {'label': 'High school', 'value': 'H'}
-                ], ),
+        dcc.Dropdown(
+            id='el',
+            style={'height': '40px', 'width': '190px','font-size': '15px'},
+            options=[
+                {'label': 'Primary school', 'value': 'P'},
+                {'label': 'Secondary school', 'value': 'S'},
+                {'label': 'High school', 'value': 'H'}
+            ], ),
+        html.Br(),
         dcc.Input(id='input_state', type='number', inputMode='numeric', value=2004,
-                  max=2018, min=2004, step=1, required=True),
-        html.Button(id='submit_button', n_clicks=0, children='Submit')]),),
+                  max=2018, min=2004, step=1, required=True,
+                  style={'marginRight':'10px','height': '40px', 'width': '100px','font-size': '15px'}),
+        html.Button(id='submit_button', n_clicks=0, children='Submit',
+                    style={'height': '40px', 'width': '150px', 'background-color': 'white', 'color': '#9CDBE7',
+                           'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+                           'font-size': '20px'}
+                    )
+    ],width=6),),
 
-html.Hr(),
-html.Br(),
 
-    html.Div([
-        html.H1("Selected year", className="five columns",
-                style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-                       'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-                       'font-size': '20px'}),
-        html.Div("Previous year", className="five columns",
-                 style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-                        'font-size': '20px'}),
-        html.Div("RATE OF EVOLUTION", className="five columns",
-                 style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-                        'font-size': '15px'}),
-        html.Br(),
-    ], className="row", style={'width': '50%', 'margin': '0 auto'}),
-    html.Div([
-        html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
-                 style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
-        html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
-                 style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
-        html.Div([dbc.CardHeader(Lottie(options=options, width="30%", height="25%", url=url_coonections))],
-                 className="three columns", style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
-        html.Br(),
-    ], className="row", style={'width': '50%', 'margin': '0 auto'}),
-    html.Div([
-        html.Div(id='S1', className="three columns",
-                 style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-                        'font-size': '20px'}),
-        html.Div(id='LY1', className="three columns",
-                 style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-                        'font-size': '20px'}),
-        html.Div(id='rate1', className="three columns",
-                 style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-                        'font-size': '20px'}),
-        html.Br(),
-    ], className="row", style={'width': '50%', 'margin': '0 auto'}),
-html.Hr(),
-html.Br(),
+
+#     html.Div([
+#         dbc.Row([
+#             dbc.Col(dbc.Card(dbc.CardBody(
+#                     html.Div([
+#                     html.H2("SELECTED YEAR"),
+#                 ], style={'textAlign': 'center'}) )),width=3),
+#             dbc.Col(dbc.Card(dbc.CardBody(
+#                 html.Div([
+#                     html.H2("PREVIOUS YEAR"),
+#                 ], style={'textAlign': 'center'}))), width=3),
+#             dbc.Col(dbc.Card(dbc.CardBody(
+#                 html.Div([
+#                     html.H2("RATE "),
+#                 ], style={'textAlign': 'center'}))), width=3)
+#         ]),
+#         # html.H1("Selected year", className="five columns",
+#         #         style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
+#         #                'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+#         #                'font-size': '20px'}),
+#         # html.Div("Previous year", className="five columns",
+#         #          style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
+#         #                 'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+#         #                 'font-size': '20px'}),
+#         # html.Div("RATE OF EVOLUTION", className="five columns",
+#         #          style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
+#         #                 'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+#         #                 'font-size': '15px'}),
+#         html.Br(),
+#     ], className="row", style={'width': '50%', 'margin': '0 auto'}),
+#     html.Div([
+#
+# dbc.Row([
+#             dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))),width=3),
+#             dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))), width=3),
+#             dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="30%", height="25%", url=url_coonections))), width=3)
+#         ]),
+#         # html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
+#         #          style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
+#         # html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
+#         #          style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
+#         # html.Div([dbc.CardHeader(Lottie(options=options, width="30%", height="25%", url=url_coonections))],
+#         #          className="three columns", style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
+#         html.Br(),
+#     ], className="row", style={'width': '50%', 'margin': '0 auto'}),
+#     html.Div([
+#         html.Div(id='S1', className="three columns",
+#                  style={'height': '50px', 'width': '200px', 'background-color': 'black', 'color': '#9CDBE7',
+#                         'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+#                         'font-size': '20px'}),
+#         html.Div(id='LY1', className="three columns",
+#                  style={'height': '50px', 'width': '200px', 'background-color': 'black', 'color': '#9CDBE7',
+#                         'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+#                         'font-size': '20px'}),
+#         html.Div(id='rate1', className="three columns",
+#                  style={'height': '50px', 'width': '200px', 'background-color': 'black', 'color': '#9CDBE7',
+#                         'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+#                         'font-size': '20px'}),
+#         html.Br(),
+#     ], className="row", style={'width': '50%', 'margin': '0 auto'}),
+
 
   dbc.Row([
-  dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='the_graph')])),width=3) ,
+    #---------------
+    dbc.Col([
+    html.Div([
+        dbc.Row([
+            dbc.Col(dbc.Card(dbc.CardBody(
+                    html.Div([
+                    html.H2("SELECTED YEAR"),
+                ], style={'textAlign': 'center'}) )),width=4),
+            dbc.Col(dbc.Card(dbc.CardBody(
+                html.Div([
+                    html.H2("PREVIOUS YEAR"),
+                ], style={'textAlign': 'center'}))), width=4),
+            dbc.Col(dbc.Card(dbc.CardBody(
+                html.Div([
+                    html.H2("RATE "),
+                ], style={'textAlign': 'center'}))), width=4)
+        ]),
+        # html.H1("Selected year", className="five columns",
+        #         style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
+        #                'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+        #                'font-size': '20px'}),
+        # html.Div("Previous year", className="five columns",
+        #          style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
+        #                 'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+        #                 'font-size': '20px'}),
+        # html.Div("RATE OF EVOLUTION", className="five columns",
+        #          style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
+        #                 'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+        #                 'font-size': '15px'}),
+        html.Br(),
+    ], className="row", style={'width': '50%', 'margin': '0 auto'}),
+    html.Div([
+
+dbc.Row([
+            dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))),width=4),
+            dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))), width=4),
+            dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="30%", height="25%", url=url_coonections))), width=4)
+        ]),
+        # html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
+        #          style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
+        # html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
+        #          style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
+        # html.Div([dbc.CardHeader(Lottie(options=options, width="30%", height="25%", url=url_coonections))],
+        #          className="three columns", style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
+        html.Br(),
+    ], className="row", style={'width': '50%', 'margin': '0 auto'}),
+    html.Div([
+        dbc.Row([
+        dbc.Col(
+        html.Div(id='S1', className="three columns",
+                 style={'height': '50px', 'width': '100px', 'background-color': 'black', 'color': '#9CDBE7',
+                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+                        'font-size': '20px'}),width=4),
+        dbc.Col(
+        html.Div(id='LY1', className="three columns",
+                 style={'height': '50px', 'width': '100px', 'background-color': 'black', 'color': '#9CDBE7',
+                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+                        'font-size': '20px'}),width=4),
+        dbc.Col(
+        html.Div(id='rate1', className="three columns",
+                 style={'height': '50px', 'width': '100px', 'background-color': 'black', 'color': '#9CDBE7',
+                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
+                        'font-size': '20px'}),width=4),
+        html.Br(),]),
+    ], className="row", style={'width': '50%', 'margin': '0 auto'})],
+    width=7
+    ),
+    #--------------
+  dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='the_graph')])),width=5) ,
 ],align='center'
   ),
 
@@ -112,7 +206,7 @@ html.Br(),
     [State(component_id='input_state', component_property='value')],
     [State(component_id='el', component_property='value')],
 )
-def update_bar_chart(num_clicks, val_selected, edlev):
+def update_map(num_clicks, val_selected, edlev):
     if edlev == 'P':
         x1 = 'EvolutionP_R'
     if edlev == 'S':
@@ -155,7 +249,7 @@ def update_bar_chart(num_clicks, val_selected, edlev):
 
         fig.update_layout(
 
-            paper_bgcolor='rgba(0, 0, 0, 0)',
+            # paper_bgcolor='rgba(0, 0, 0, 0)',
             title='Most trafficked US airports<br>(Hover for Region names)',
             geo=dict(
                 scope='africa',

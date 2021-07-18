@@ -55,10 +55,10 @@ sidebar = html.Div(
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
-    dbc.Row(dbc.Col(html.Div([
-        html.H2("Rate by year"),
-        html.Img(src="/assets/A.png")
-    ], className="banner"),),),
+    # dbc.Row(dbc.Col(html.Div([
+    #     html.H2("Rate by year"),
+    #     html.Img(src="/assets/A.png")
+    # ], className="banner"),),),
    dbc.Row(dbc.Col(html.Div(sidebar),),),
    dbc.Row(dbc.Row(html.Div(id='page-content', children=[]),),),
 
