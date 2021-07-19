@@ -52,135 +52,45 @@ dbc.Row(dbc.Col([
                     )
     ],width=6),),
 
-
-
-#     html.Div([
-#         dbc.Row([
-#             dbc.Col(dbc.Card(dbc.CardBody(
-#                     html.Div([
-#                     html.H2("SELECTED YEAR"),
-#                 ], style={'textAlign': 'center'}) )),width=3),
-#             dbc.Col(dbc.Card(dbc.CardBody(
-#                 html.Div([
-#                     html.H2("PREVIOUS YEAR"),
-#                 ], style={'textAlign': 'center'}))), width=3),
-#             dbc.Col(dbc.Card(dbc.CardBody(
-#                 html.Div([
-#                     html.H2("RATE "),
-#                 ], style={'textAlign': 'center'}))), width=3)
-#         ]),
-#         # html.H1("Selected year", className="five columns",
-#         #         style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-#         #                'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-#         #                'font-size': '20px'}),
-#         # html.Div("Previous year", className="five columns",
-#         #          style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-#         #                 'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-#         #                 'font-size': '20px'}),
-#         # html.Div("RATE OF EVOLUTION", className="five columns",
-#         #          style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-#         #                 'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-#         #                 'font-size': '15px'}),
-#         html.Br(),
-#     ], className="row", style={'width': '50%', 'margin': '0 auto'}),
-#     html.Div([
-#
-# dbc.Row([
-#             dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))),width=3),
-#             dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))), width=3),
-#             dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="30%", height="25%", url=url_coonections))), width=3)
-#         ]),
-#         # html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
-#         #          style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
-#         # html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
-#         #          style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
-#         # html.Div([dbc.CardHeader(Lottie(options=options, width="30%", height="25%", url=url_coonections))],
-#         #          className="three columns", style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
-#         html.Br(),
-#     ], className="row", style={'width': '50%', 'margin': '0 auto'}),
-#     html.Div([
-#         html.Div(id='S1', className="three columns",
-#                  style={'height': '50px', 'width': '200px', 'background-color': 'black', 'color': '#9CDBE7',
-#                         'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-#                         'font-size': '20px'}),
-#         html.Div(id='LY1', className="three columns",
-#                  style={'height': '50px', 'width': '200px', 'background-color': 'black', 'color': '#9CDBE7',
-#                         'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-#                         'font-size': '20px'}),
-#         html.Div(id='rate1', className="three columns",
-#                  style={'height': '50px', 'width': '200px', 'background-color': 'black', 'color': '#9CDBE7',
-#                         'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-#                         'font-size': '20px'}),
-#         html.Br(),
-#     ], className="row", style={'width': '50%', 'margin': '0 auto'}),
-
-
   dbc.Row([
     #---------------
     dbc.Col([
     html.Div([
         dbc.Row([
-            dbc.Col(dbc.Card(dbc.CardBody(
-                    html.Div([
-                    html.H2("SELECTED YEAR"),
-                ], style={'textAlign': 'center'}) )),width=4),
-            dbc.Col(dbc.Card(dbc.CardBody(
-                html.Div([
-                    html.H2("PREVIOUS YEAR"),
-                ], style={'textAlign': 'center'}))), width=4),
-            dbc.Col(dbc.Card(dbc.CardBody(
-                html.Div([
-                    html.H2("RATE "),
-                ], style={'textAlign': 'center'}))), width=4)
-        ]),
-        # html.H1("Selected year", className="five columns",
-        #         style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-        #                'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-        #                'font-size': '20px'}),
-        # html.Div("Previous year", className="five columns",
-        #          style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-        #                 'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-        #                 'font-size': '20px'}),
-        # html.Div("RATE OF EVOLUTION", className="five columns",
-        #          style={'height': '50px', 'width': '200px', 'background-color': 'white', 'color': '#9CDBE7',
-        #                 'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-        #                 'font-size': '15px'}),
-        html.Br(),
-    ], className="row", style={'width': '50%', 'margin': '0 auto'}),
-    html.Div([
+        dbc.Col([
+            dbc.Card([
+                dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
+                dbc.CardBody([
+                    html.H6('Connections'),
+                    html.H2(id='S1' )
+                ], style={'textAlign':'center'})
+            ]),
+        ], width=4),
+            dbc.Col([
+                dbc.Card([
+                    dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
+                    dbc.CardBody([
+                        html.H6('Connections'),
+                        html.H2(id='LY1')
+                    ], style={'textAlign': 'center'})
+                ]),
+            ], width=4),
+            dbc.Col([
+                dbc.Card([
+                    dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
+                    dbc.CardBody([
+                        html.H6('Connections'),
+                        html.H2(id='rate1')
+                    ], style={'textAlign': 'center'})
+                ]),
+            ], width=4),
 
-dbc.Row([
-            dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))),width=4),
-            dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))), width=4),
-            dbc.Col(dbc.Card(dbc.CardHeader(Lottie(options=options, width="30%", height="25%", url=url_coonections))), width=4)
         ]),
-        # html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
-        #          style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
-        # html.Div([dbc.CardHeader(Lottie(options=options, width="55%", height="55%", url=B))], className="three columns",
-        #          style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
-        # html.Div([dbc.CardHeader(Lottie(options=options, width="30%", height="25%", url=url_coonections))],
-        #          className="three columns", style={'height': '50px', 'width': '200px', 'background-color': 'black'}),
+
         html.Br(),
     ], className="row", style={'width': '50%', 'margin': '0 auto'}),
-    html.Div([
-        dbc.Row([
-        dbc.Col(
-        html.Div(id='S1', className="three columns",
-                 style={'height': '50px', 'width': '100px', 'background-color': 'black', 'color': '#9CDBE7',
-                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-                        'font-size': '20px'}),width=4),
-        dbc.Col(
-        html.Div(id='LY1', className="three columns",
-                 style={'height': '50px', 'width': '100px', 'background-color': 'black', 'color': '#9CDBE7',
-                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-                        'font-size': '20px'}),width=4),
-        dbc.Col(
-        html.Div(id='rate1', className="three columns",
-                 style={'height': '50px', 'width': '100px', 'background-color': 'black', 'color': '#9CDBE7',
-                        'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-                        'font-size': '20px'}),width=4),
-        html.Br(),]),
-    ], className="row", style={'width': '50%', 'margin': '0 auto'})],
+
+    ],
     width=7
     ),
     #--------------
@@ -188,8 +98,7 @@ dbc.Row([
 ],align='center'
   ),
 
-html.Br(),
-html.Br(),
+
     dbc.Row([
     dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='t7', figure={})])),width=6) ,
     dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='t6', figure={})])), width=6)
