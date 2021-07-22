@@ -7,7 +7,7 @@ from app import app
 from app import server
 
 # Connect to your app pages
-from apps import test_page1, test_page2, home_page, test_page3
+from apps import test_page1, test_page2, home_page, test_page3, province
 
 from dash_extensions import Lottie
 import dash_bootstrap_components as dbc
@@ -20,13 +20,6 @@ options = dict(loop=True, autoplay=True, rendererSettings=dict(preserveAspectRat
 SIDEBAR_STYLE = {
     "background-color": "#f8f9fa",
 }
-# padding for the page content
-# CONTENT_STYLE = {
-#     "margin-left": "18rem",
-#     "margin-right": "2rem",
-#     "padding": "2rem 1rem",
-# }
-
 sidebar = html.Div(
     [
         dbc.Navbar(
@@ -34,7 +27,7 @@ sidebar = html.Div(
                 dbc.NavLink("Home", href="/apps/", active="exact"),
                 # dbc.NavLink("Page 1", href="/apps/Eff_by", active="exact"),
                 dbc.NavLink("Page 2", href="/apps/rate_by", active="exact"),
-                # dbc.NavLink("Page 3", href="/apps/map", active="exact"),
+                dbc.NavLink("Province", href="/apps/prov", active="exact"),
                 dbc.DropdownMenu(
                     [dbc.DropdownMenuItem(dbc.NavLink("Page 1", href="/apps/Eff_by", active="exact"), style={'font-size': '20px'}),
                      dbc.DropdownMenuItem(dbc.NavLink("Page 3", href="/apps/map", active="exact"),style={'font-size': '20px'})],
@@ -51,7 +44,6 @@ sidebar = html.Div(
     ],
 
 )
-
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -72,11 +64,13 @@ def display_page(pathname):
         return test_page2.layout
     if pathname == '/apps/map':
         return test_page3.layout
+    if pathname == '/apps/prov':
+        return province.layout
     else:
         return home_page.layout
 
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True,port=8051)
+    app.run_server(debug=True,port=8053)
 

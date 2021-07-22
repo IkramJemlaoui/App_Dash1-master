@@ -91,13 +91,12 @@ dbc.Row(dbc.Col([
     ], className="row", style={'width': '50%', 'margin': '0 auto'}),
 
     ],
-    width=7
+    width=5
     ),
     #--------------
-  dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='the_graph')])),width=5) ,
+  dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='the_graph')])),width=7) ,
 ],align='center'
   ),
-
 
     dbc.Row([
     dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='t7', figure={})])),width=6) ,
@@ -182,25 +181,47 @@ def update_map(num_clicks, val_selected, edlev):
 )
 
 def update_bar_chart(num_clicks,val_selected,edlev):
-    mask1 = df["Year"] == str(val_selected)
-    mask2 = df["Year"] == str(int(val_selected)-1)
-    df0=df[mask1]
-    df1=df[mask2]
     if edlev == 'P':
         x1 = 'EffectifsP_R'
     if edlev == 'S':
         x1 = 'EffectifsSC_R'
     if edlev == 'H':
         x1 = 'EffectifsSQ_R'
+    if str(val_selected) != '2015':
 
-    trace1 = go.Bar(    #setup the chart for the selected year
-        x=df0["Region"].unique(), #x for the selected year
-        y=df0['EffectifsSQ_R'],#y for the selected year
-        marker_color=px.colors.qualitative.Dark24[0],  #color
-        text=df0['EffectifsSQ_R'], #label/text
-        textposition="outside", #text position
-        name="Selected year", #legend name
+        mask1 = df["Year"] == str(val_selected)
+        mask2 = df["Year"] == str(int(val_selected)-1)
+        df0=df[mask1]
+        df1=df[mask2]
+        trace1 = go.Bar(  # setup the chart for the selected year
+            x=df0["Region"].unique(),  # x for the selected year
+            y=df0[x1],  # y for the selected year
+            marker_color=px.colors.qualitative.Dark24[0],  # color
+            text=df0[x1],  # label/text
+            textposition="outside",  # text position
+            name="Selected year",  # legend name
+        )
+    if str(val_selected) == '2015':
+        mask1 = df["Year"] == str(val_selected)
+        df1 = df[mask1]
+        trace1 = go.Bar(   #setup the chart for the previous year
+        x=df1["Region"].unique(),
+        y=df1[x1],
+        text=df1[x1],
+        marker_color=px.colors.qualitative.Dark24[1],
+        textposition="outside",
+        name="Previous year ",
     )
+
+
+    # trace1 = go.Bar(    #setup the chart for the selected year
+    #     x=df0["Region"].unique(), #x for the selected year
+    #     y=df0['EffectifsSQ_R'],#y for the selected year
+    #     marker_color=px.colors.qualitative.Dark24[0],  #color
+    #     text=df0['EffectifsSQ_R'], #label/text
+    #     textposition="outside", #text position
+    #     name="Selected year", #legend name
+    # )
 
     trace2 = go.Bar(   #setup the chart for the previous year
         x=df1["Region"].unique(),
