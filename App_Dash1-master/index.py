@@ -7,7 +7,7 @@ from app import app
 from app import server
 
 # Connect to your app pages
-from apps import test_page1, test_page2, home_page, test_page3, province
+from apps import test_page1, test_page2, home_page, test_page3, province,map2015 , map2014, provincetta15
 
 from dash_extensions import Lottie
 import dash_bootstrap_components as dbc
@@ -25,9 +25,11 @@ sidebar = html.Div(
         dbc.Navbar(
             [
                 dbc.NavLink("Home", href="/apps/", active="exact"),
-                # dbc.NavLink("Page 1", href="/apps/Eff_by", active="exact"),
+                dbc.NavLink("map2015", href="/apps/map15", active="exact"),
                 dbc.NavLink("Page 2", href="/apps/rate_by", active="exact"),
                 dbc.NavLink("Province", href="/apps/prov", active="exact"),
+                dbc.NavLink("map2014", href="/apps/map14", active="exact"),
+                dbc.NavLink("provincetta15", href="/apps/prov15", active="exact"),
                 dbc.DropdownMenu(
                     [dbc.DropdownMenuItem(dbc.NavLink("Page 1", href="/apps/Eff_by", active="exact"), style={'font-size': '20px'}),
                      dbc.DropdownMenuItem(dbc.NavLink("Page 3", href="/apps/map", active="exact"),style={'font-size': '20px'})],
@@ -44,7 +46,6 @@ sidebar = html.Div(
     ],
 
 )
-
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     # dbc.Row(dbc.Col(html.Div([
@@ -66,10 +67,14 @@ def display_page(pathname):
         return test_page3.layout
     if pathname == '/apps/prov':
         return province.layout
+    if pathname == '/apps/map15':
+        return map2015.layout
+    if pathname == '/apps/map14':
+        return map2014.layout
+    if pathname == '/apps/prov15':
+        return provincetta15.layout
     else:
         return home_page.layout
-
-
 
 if __name__ == '__main__':
     app.run_server(debug=True,port=8053)
