@@ -20,7 +20,7 @@ db = mysql.connect(
     auth_plugin='mysql_native_password',
 )
 df = pd.read_sql(
-    "Select  morocco_04_18.dim_year.year,  morocco_04_18.dim_region.Region, morocco_04_18.dim_province.province,  morocco_04_18.fact_effectifs.EffectifsP_P,morocco_04_18.fact_effectifs.EvolutionP_P, morocco_04_18.fact_effectifs.EffectifsP_R,morocco_04_18.fact_effectifs.EvolutionP_R,morocco_04_18.fact_effectifs.EffectifsSC_P,morocco_04_18.fact_effectifs.EvolutionSC_P, morocco_04_18.fact_effectifs.EffectifsSC_R,morocco_04_18.fact_effectifs.EvolutionSC_R,morocco_04_18.fact_effectifs.EffectifsSQ_P,morocco_04_18.fact_effectifs.EvolutionSQ_P, morocco_04_18.fact_effectifs.EffectifsSQ_R,morocco_04_18.fact_effectifs.EvolutionSQ_R from morocco_04_18.fact_effectifs, morocco_04_18.dim_year,  morocco_04_18.dim_region, morocco_04_18.dim_province where morocco_04_18.fact_effectifs.Id_year = morocco_04_18.dim_year.Id_year and morocco_04_18.fact_effectifs.Id_region = morocco_04_18.dim_region.Id_region and morocco_04_18.fact_effectifs.Id_province = morocco_04_18.dim_province.Id_province",
+    "Select  morocco_04_18.dim_year.year,  morocco_04_18.dim_region.Region, morocco_04_18.dim_province.province,  morocco_04_18.fact_table.EffectifsPrimaryS_Prov,morocco_04_18.fact_table.EvolutionPrimaryS_Prov, morocco_04_18.fact_table.EffectifsPrimaryS_R,morocco_04_18.fact_table.EvolutionPrimaryS_R,morocco_04_18.fact_table.EffectifsSecondaryS_Prov,morocco_04_18.fact_table.EvolutionSecondaryS_Prov, morocco_04_18.fact_table.EffectifsSecondaryS_R,morocco_04_18.fact_table.EvolutionSecondaryS_R,morocco_04_18.fact_table.EffectifsHighS_Prov,morocco_04_18.fact_table.EvolutionHighS_Prov, morocco_04_18.fact_table.EffectifsHighS_R,morocco_04_18.fact_table.EvolutionHighS_R from morocco_04_18.fact_table, morocco_04_18.dim_year,  morocco_04_18.dim_region, morocco_04_18.dim_province where morocco_04_18.fact_table.Id_year = morocco_04_18.dim_year.Id_year and morocco_04_18.fact_table.Id_region = morocco_04_18.dim_region.Id_region and morocco_04_18.fact_table.Id_province = morocco_04_18.dim_province.Id_province",
     con=db)
 all_years = df["year"].unique()
 
@@ -72,11 +72,11 @@ def year_function(y):
 def update_pie_chart(y, r, edlev):
     mask = df["year"] == str(y)
     if edlev == 'P':
-        x1 = 'EffectifsP_P'
+        x1 = 'EffectifsPrimaryS_Prov'
     if edlev == 'S':
-        x1 = 'EffectifsSC_P'
+        x1 = 'EffectifsSecondaryS_Prov'
     if edlev == 'H':
-        x1 = 'EffectifsSQ_P'
+        x1 = 'EffectifsHighS_Prov'
 
     df0 = df[mask]
     mask1 = df0["Region"] == str(r)
@@ -95,11 +95,11 @@ def update_pie_chart(y, r, edlev):
     [Input(component_id='el', component_property='value')], )
 def update_bar_chart(y, r, edlev):
     if edlev == 'P':
-        x1 = 'EffectifsP_R'
+        x1 = 'EffectifsPrimaryS_R'
     if edlev == 'S':
-        x1 = 'EffectifsSC_R'
+        x1 = 'EffectifsSecondaryS_R'
     if edlev == 'H':
-        x1 = 'EffectifsSQ_R'
+        x1 = 'EffectifsHighS_R'
     mask1 = df["Region"] == r
     df1 = df[mask1]
 

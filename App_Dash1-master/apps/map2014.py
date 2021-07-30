@@ -23,34 +23,35 @@ db = mysql.connect(
     database="morroco1",
     auth_plugin='mysql_native_password',
 )
-df=pd.read_sql("select distinct(morocco_04_18.dim_region.Region), morocco_04_18.fact_effectifs.EffectifsSC_R ,morocco_04_18.fact_effectifs.EffectifsSQ_R ,morocco_04_18.fact_effectifs.EffectifsP_R ,morocco_04_18.fact_effectifs.EvolutionP_R, morocco_04_18.fact_effectifs.EvolutionSQ_R,morocco_04_18.fact_effectifs.EvolutionSC_R,morocco_04_18.dim_year.Year,morocco_04_18.dim_region.Latitude,morocco_04_18.dim_region.Longitude from morocco_04_18.dim_region, morocco_04_18.fact_effectifs, morocco_04_18.dim_year where  morocco_04_18.fact_effectifs.Id_region = morocco_04_18.dim_region.Id_region  and morocco_04_18.fact_effectifs.Id_year = morocco_04_18.dim_year.Id_year",con=db)
+df=pd.read_sql("select distinct(morocco_04_18.dim_region.Region), morocco_04_18.fact_table.EffectifsSecondaryS_R ,morocco_04_18.fact_table.EffectifsHighS_R ,morocco_04_18.fact_table.EffectifsPrimaryS_R ,morocco_04_18.fact_table.EvolutionPrimaryS_R, morocco_04_18.fact_table.EvolutionHighS_R,morocco_04_18.fact_table.EvolutionSecondaryS_R,morocco_04_18.dim_year.Year,morocco_04_18.dim_region.Latitude,morocco_04_18.dim_region.Longitude from morocco_04_18.dim_region, morocco_04_18.fact_table, morocco_04_18.dim_year where  morocco_04_18.fact_table.Id_region = morocco_04_18.dim_region.Id_region  and morocco_04_18.fact_table.Id_year = morocco_04_18.dim_year.Id_year",con=db)
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 
 
 layout = html.Div([
 html.Hr(),
 html.Br(),
-dbc.Row(dbc.Col([
+dbc.Row([
+    dbc.Col([
 
         dcc.Dropdown(
             id='el',
-            style={'height': '40px', 'width': '190px','font-size': '15px'},
+            style={'height': '40px', 'width': '190px','font-size': '19px'},
             options=[
                 {'label': 'Primary school', 'value': 'P'},
                 {'label': 'Secondary school', 'value': 'S'},
                 {'label': 'High school', 'value': 'H'}
-            ], ),
-        html.Br(),
-        dcc.Input(id='input_state', type='number', inputMode='numeric', value=2004,
+            ], ),],width=1),
+        dbc.Col([        dcc.Input(id='input_state', type='number', inputMode='numeric', value=2004,
                   max=2014, min=2004, step=1, required=True,
-                  style={'marginRight':'10px','height': '40px', 'width': '100px','font-size': '15px'}),
-        html.Button(id='submit_button', n_clicks=0, children='Submit',
-                    style={'height': '40px', 'width': '150px', 'background-color': 'white', 'color': '#9CDBE7',
+                  style={'marginRight':'10px','height': '40px', 'width': '100px','font-size': '19px'})],width=1),
+        dbc.Col([        html.Button(id='submit_button', n_clicks=0, children='Submit',
+                    style={'height': '45px', 'width': '150px', 'background-color': 'white', 'color': '#9CDBE7',
                            'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
                            'font-size': '20px'}
-                    )
-    ],width=6),),
+                    )],width=3),
 
+    ]),
+html.Br(),
   dbc.Row([
     #---------------
     dbc.Col([
@@ -60,7 +61,7 @@ dbc.Row(dbc.Col([
             dbc.Card([
                 dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
                 dbc.CardBody([
-                    html.H6('Connections'),
+                    html.H6('Selected year'),
                     html.H2(id='S1' )
                 ], style={'textAlign':'center'})
             ]),
@@ -69,7 +70,7 @@ dbc.Row(dbc.Col([
                 dbc.Card([
                     dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
                     dbc.CardBody([
-                        html.H6('Connections'),
+                        html.H6('Previous year'),
                         html.H2(id='LY1')
                     ], style={'textAlign': 'center'})
                 ]),
@@ -78,7 +79,7 @@ dbc.Row(dbc.Col([
                 dbc.Card([
                     dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
                     dbc.CardBody([
-                        html.H6('Connections'),
+                        html.H6('Rate'),
                         html.H2(id='rate1')
                     ], style={'textAlign': 'center'})
                 ]),
@@ -115,11 +116,11 @@ dbc.Row(dbc.Col([
 )
 def update_map(num_clicks, val_selected, edlev):
     if edlev == 'P':
-        x1 = 'EvolutionP_R'
+        x1 = 'EvolutionPrimaryS_R'
     if edlev == 'S':
-        x1 = 'EvolutionSC_R'
+        x1 = 'EvolutionSecondaryS_R'
     if edlev == 'H':
-        x1 = 'EvolutionSQ_R'
+        x1 = 'EvolutionHighS_R'
 
 
     if val_selected is None:
@@ -157,7 +158,7 @@ def update_map(num_clicks, val_selected, edlev):
         fig.update_layout(
 
             # paper_bgcolor='rgba(0, 0, 0, 0)',
-            title='Most trafficked US airports<br>(Hover for Region names)',
+            title='(Hover for Region names)',
             geo=dict(
                 scope='africa',
                 showland=True,
@@ -181,11 +182,11 @@ def update_map(num_clicks, val_selected, edlev):
 
 def update_bar_chart(num_clicks,val_selected,edlev):
     if edlev == 'P':
-        x1 = 'EffectifsP_R'
+        x1 = 'EffectifsPrimaryS_R'
     if edlev == 'S':
-        x1 = 'EffectifsSC_R'
+        x1 = 'EffectifsSecondaryS_R'
     if edlev == 'H':
-        x1 = 'EffectifsSQ_R'
+        x1 = 'EffectifsHighS_R'
 
 
     mask1 = df["Year"] == str(val_selected)
@@ -242,16 +243,16 @@ def update_sum_eff_ly(num_clicks,val_selected,edlev):
 
     mask = df["Year"] == str(int(val_selected)-1)
     df3 = df[mask]
-    df4 = df3[['Region', 'EffectifsSC_R', 'EffectifsP_R', 'EffectifsSQ_R', 'EvolutionP_R', 'EvolutionSC_R',
-               'EvolutionSQ_R']]
+    df4 = df3[['Region', 'EffectifsSecondaryS_R', 'EffectifsPrimaryS_R', 'EffectifsHighS_R', 'EvolutionPrimaryS_R', 'EvolutionSecondaryS_R',
+               'EvolutionHighS_R']]
     if edlev == 'P':
-        total = df4['EffectifsP_R'].sum()
+        total = df4['EffectifsPrimaryS_R'].sum()
         return total
     if edlev == 'S':
-        total = df4['EffectifsSC_R'].sum()
+        total = df4['EffectifsSecondaryS_R'].sum()
         return total
     if edlev == 'H':
-        total = df4['EffectifsSQ_R'].sum()
+        total = df4['EffectifsHighS_R'].sum()
         return total
 
 @app.callback(
@@ -263,16 +264,16 @@ def update_sum_eff_Sy(num_clicks,val_selected,edlev):
 
     mask = df["Year"] == str(int(val_selected))
     df3 = df[mask]
-    df4 = df3[['Region', 'EffectifsSC_R', 'EffectifsP_R', 'EffectifsSQ_R', 'EvolutionP_R', 'EvolutionSC_R',
-               'EvolutionSQ_R']]
+    df4 = df3[['Region', 'EffectifsSecondaryS_R', 'EffectifsPrimaryS_R', 'EffectifsHighS_R', 'EvolutionPrimaryS_R', 'EvolutionSecondaryS_R',
+               'EvolutionHighS_R']]
     if edlev == 'P':
-        total = df4['EffectifsP_R'].sum()
+        total = df4['EffectifsPrimaryS_R'].sum()
         return total
     if edlev == 'S':
-        total = df4['EffectifsSC_R'].sum()
+        total = df4['EffectifsSecondaryS_R'].sum()
         return total
     if edlev == 'H':
-        total = df4['EffectifsSQ_R'].sum()
+        total = df4['EffectifsHighS_R'].sum()
         return total
 
 
@@ -295,11 +296,11 @@ def update_rate(lyear,year):
 def update_pie_chart(num_clicks,val_selected,edlev):
     mask = df["Year"] == str(val_selected)
     if edlev == 'P':
-        x1 = 'EffectifsP_R'
+        x1 = 'EffectifsPrimaryS_R'
     if edlev == 'S':
-        x1 = 'EffectifsSC_R'
+        x1 = 'EffectifsSecondaryS_R'
     if edlev == 'H':
-        x1 = 'EffectifsSQ_R'
+        x1 = 'EffectifsHighS_R'
 
     fig = px.pie(df[mask], values=x1, names='Region', color_discrete_sequence=px.colors.sequential.Plasma)
     fig.update_layout(

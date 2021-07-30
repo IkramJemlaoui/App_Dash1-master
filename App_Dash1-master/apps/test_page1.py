@@ -20,11 +20,11 @@ db = mysql.connect(
 
 
 df8 = pd.read_sql(
-    "select distinct(morocco_04_18.dim_region.Region), morocco_04_18.fact_effectifs.EffectifsP_R , morocco_04_18.fact_effectifs.EffectifsSC_R ,morocco_04_18.fact_effectifs.EffectifsSQ_R ,morocco_04_18.dim_year.Year from morocco_04_18.dim_region, morocco_04_18.fact_effectifs, morocco_04_18.dim_year where morocco_04_18.fact_effectifs.Id_region = morocco_04_18.dim_region.Id_region and morocco_04_18.fact_effectifs.Id_year = morocco_04_18.dim_year.Id_year",
+    " select distinct(morocco_04_18.dim_region.Region), morocco_04_18.fact_table.EffectifsPrimaryS_R , morocco_04_18.fact_table.EffectifsSecondaryS_R ,morocco_04_18.fact_table.EffectifsHighS_R ,morocco_04_18.dim_year.Year from morocco_04_18.dim_region, morocco_04_18.fact_table, morocco_04_18.dim_year where morocco_04_18.fact_table.Id_region = morocco_04_18.dim_region.Id_region and morocco_04_18.fact_table.Id_year = morocco_04_18.dim_year.Id_year",
     con=db)
 
 all_years = df8["Year"].unique()
-a=df8[[ 'EffectifsSC_R','EffectifsP_R','EffectifsSQ_R']].head(0)
+a=df8[[ 'EffectifsSecondaryS_R','EffectifsPrimaryS_R','EffectifsHighS_R']].head(0)
 
 # ---------------------------------------------------------------
 layout = html.Div([
