@@ -34,8 +34,9 @@ external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 layout = html.Div([
 html.Hr(),
 html.Br(),
-dbc.Row(dbc.Col([
-
+dbc.Row([
+    dbc.Col(width=1),
+    dbc.Col([
         dcc.Dropdown(
             id='el2',
             style={'height': '40px', 'width': '190px','font-size': '15px'},
@@ -43,64 +44,70 @@ dbc.Row(dbc.Col([
                 {'label': 'Primary school', 'value': 'P'},
                 {'label': 'Secondary school', 'value': 'S'},
                 {'label': 'High school', 'value': 'H'}
-            ], ),
+            ], ),],width=2),
         html.Br(),
+    dbc.Col([
         dcc.Input(id='input_state2', type='number', inputMode='numeric', value=2015,
                   max=2018, min=2015, step=1, required=True,
-                  style={'marginRight':'10px','height': '40px', 'width': '100px','font-size': '15px'}),
-        html.Button(id='submit_button2', n_clicks=0, children='Submit',
-                    style={'height': '40px', 'width': '150px', 'background-color': 'white', 'color': '#9CDBE7',
-                           'text-align': 'center', 'vertical-align': 'middle', 'line-height': '50px',
-                           'font-size': '20px'}
-                    )
-    ],width=6),),
-html.Br(),
-  dbc.Row([
-    dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='the_graph2')])), width=8),
-    #---------------
+                  style={'marginRight':'10px','height': '40px', 'width': '100px','font-size': '15px'}),],width=1),
+
     dbc.Col([
-    html.Div([
-        dbc.Row([
+        dbc.Button("Submit",size="lg", color="info", className="mr-1", id='submit_button2'),
+    ], width=2),
+]),
+html.Br(),
+html.Br(),
+html.Br(),
+    dbc.Row([
         dbc.Col([
-            dbc.Card([
-                dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
-                dbc.CardBody([
-                    html.H6('Selected year effectif'),
-                    html.H2(id='S12' )
-                ], style={'textAlign':'center'})
-            ]),
-        ], width=4),
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
-                    dbc.CardBody([
-                        html.H6('Previvous year effectif'),
-                        html.H2(id='LY12')
-                    ], style={'textAlign': 'center'})
+            html.Div([
+                dbc.Row([
+                    dbc.Col([
+                        dbc.Card([
+                            # dbc.CardHeader(Lottie(options=options, width="37%", height="37%", url=url_coonections)),
+                            dbc.CardBody([
+                                html.H2('Selected Year Effectif'),
+                                html.H2(id='S12')
+                            ], style={'textAlign': 'center','color': '#9CDBE7'})
+                        ],color="dark"),
+                    ], width=4),
+                    dbc.Col([
+                        dbc.Card([
+                            # dbc.CardHeader(Lottie(options=options, width="37%", height="37%", url=url_coonections)),
+
+                            dbc.CardBody([
+                                html.H2('Previvous Year Effectif'),
+                                html.H2(id='LY12'),
+                            ], style={'textAlign': 'center','color': 'white'}),
+                        ],color="dark"),
+                    ], width=4),
+                    dbc.Col([
+                        dbc.Card([
+                            # dbc.CardHeader(Lottie(options=options, width="37%", height="37%", url=url_coonections)),
+                            dbc.CardBody([
+                                html.H2('Rate'),
+                                html.H2(id='rate12')
+                            ], style={'textAlign': 'center','color': '#9CDBE7'})
+                        ],color="dark"),
+                    ],width=4),
+
                 ]),
-            ], width=4),
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
-                    dbc.CardBody([
-                        html.H6('Rate'),
-                        html.H1(id='rate12')
-                    ], style={'textAlign': 'center'})
-                ]),
-            ], width=4),
 
-        ]),
+                html.Br(),
+            ],style={'margin': '0 auto'}),
 
-        html.Br(),
-    ], className="row", style={'width': '50%', 'margin': '0 auto'}),
+        ],
+            width=4
+        ),
+    ],justify="center"),
+    dbc.Row([
+        dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='the_graph2')])), width=6),
+        dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='area')])), width=6)
 
-    ],
-    width=4
-    ),
-    #--------------
-
-],align='center'
-  ),
+    ],align='center'),
+  # dbc.Row([
+  #   dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='the_graph2')])), width=8)],justify="center"),
+  #   html.Br(),
 
     dbc.Row([
     dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='t72', figure={})])),width=6) ,
@@ -275,3 +282,34 @@ def update_pie_chart(num_clicks,val_selected,edlev):
         paper_bgcolor='rgba(0, 0, 0, 0)',
     )
     return fig
+
+
+
+#----------------------------AREA_chart_FUNCTION------------------------------
+@app.callback(
+    Output("area", "figure"),
+    [Input(component_id='el2', component_property='value')],
+)
+def update_area_chart(edlev):
+    if edlev == 'P':
+        dff = df.groupby(["Year"]).EffectifsPrimaryS_R.sum().reset_index()
+        dff['previous'] = dff.EffectifsPrimaryS_R.shift(1)
+        dff['rate'] = ((dff['EffectifsPrimaryS_R'] - dff['previous']) / dff['previous']) * 100
+    if edlev == 'S':
+        dff = df.groupby(["Year"]).EffectifsSecondaryS_R.sum().reset_index()
+
+        dff['previous'] = dff.EffectifsSecondaryS_R.shift(1)
+        dff['rate'] = ((dff['EffectifsSecondaryS_R'] - dff['previous']) / dff['previous']) * 100
+    if edlev == 'H':
+        dff = df.groupby(["Year"]).EffectifsHighS_R.sum().reset_index()
+        dff['previous'] = dff.EffectifsHighS_R.shift(1)
+        dff['rate'] = ((dff['EffectifsHighS_R'] - dff['previous']) / dff['previous']) * 100
+
+    fig = px.area(dff, x='Year', y='rate')
+    fig.update_layout(
+        template='plotly_dark',
+        # plot_bgcolor='rgba(0, 0, 0, 0)',
+        # paper_bgcolor='rgba(0, 0, 0, 0)',
+    )
+    return fig
+

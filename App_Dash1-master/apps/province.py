@@ -62,8 +62,6 @@ def year_function(y):
     all_Regions = df0["Region"].unique()
 
     return [{'value': x, 'label': x} for x in all_Regions]
-
-
 @app.callback(
     Output(component_id='pie_prov', component_property='figure'),
     [Input(component_id='years', component_property='value')],
@@ -129,3 +127,5 @@ def update_bar_chart(y, r, edlev):
     fig1 = go.Figure(data=data, layout=layout)
 
     return fig1
+
+

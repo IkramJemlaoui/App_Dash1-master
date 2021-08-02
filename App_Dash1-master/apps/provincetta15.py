@@ -46,7 +46,6 @@ layout = html.Div([
             value=all_years[3:],
         ),],width=1),
 
-
         dbc.Col([dcc.Dropdown(
             id='el1',
             style={'height': '40px', 'width': '190px', 'font-size': '19px'},
@@ -58,51 +57,11 @@ layout = html.Div([
 
         ]),
     html.Br(),
+    dbc.Row([dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id="area1")])),width=6),
+    dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='map_prov1', figure={})])),width=6)
+             ],justify="center"),
 
-    dbc.Row([
-    #---------------
-    # dbc.Col([
-    # html.Div([
-    #     dbc.Row([
-    #     dbc.Col([
-    #         dbc.Card([
-    #             dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
-    #             dbc.CardBody([
-    #                 html.H6('Connections'),
-    #                 html.H2(id='Sum_Y' )
-    #             ], style={'textAlign':'center'})
-    #         ]),
-    #     ], width=4),
-    #         dbc.Col([
-    #             dbc.Card([
-    #                 dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
-    #                 dbc.CardBody([
-    #                     html.H6('Connections'),
-    #                     html.H2(id='Sum_LY')
-    #                 ], style={'textAlign': 'center'})
-    #             ]),
-    #         ], width=4),
-    #         dbc.Col([
-    #             dbc.Card([
-    #                 dbc.CardHeader(Lottie(options=options, width="67%", height="67%", url=url_coonections)),
-    #                 dbc.CardBody([
-    #                     html.H6('Connections'),
-    #                     html.H1(id='rate3')
-    #                 ], style={'textAlign': 'center'})
-    #             ]),
-    #         ], width=4),
-    #
-    #     ]),
-    #
-    #     html.Br(),
-    # ], className="row", style={'width': '50%', 'margin': '0 auto'}),
-    #
-    # ],
-    # width=5
-    # ),
-    #--------------
-  dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='map_prov1', figure={})])),width=9),
-],align='center' ),
+    # dbc.Row([dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='map_prov1', figure={})])),width=9),],justify="center"),
     dbc.Row([
             dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='pie_prov1', figure={})])), width=6),
             dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='bar1', figure={})])), width=6)
@@ -126,16 +85,15 @@ def update_map(y, r, edlev):
         raise PreventUpdate
     else:
         mask1 = df["Year"] == str(y)
-        df0 = df[mask1]
+        df0 = df[mask1].reset_index()
         mask1 = df0["Region"] == str(r)
-        df1 = df0[mask1]
+        df1 = df0[mask1].reset_index()
 
         fig = px.choropleth_mapbox(df1, geojson=data, color=x1,
                                    locations="province", featureidkey="properties.province",
                                    center={"lat": 45.5517, "lon": -73.7073},
                                    mapbox_style="carto-positron", zoom=9)
         fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-
 
         return  fig
 
@@ -291,3 +249,32 @@ def update_rate(lyear,year):
 
         rate = (int(year)-int(lyear))/int(lyear)
         return round(rate*100,1)
+#----------------------------AREA_chart_FUNCTION------------------------------
+@app.callback(
+    Output("area1", "figure"),
+    Input(component_id='R1', component_property='value'),
+    Input(component_id='el1', component_property='value'),
+    )
+def update_area_chart(r,edlev):
+
+    y = df[df['Region'] == r]
+
+    if edlev == 'P':
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(name='Primary', x=y['Year'], y=y['EvolutionPrimaryS_R'], hoverinfo='x+y',
+                         mode='lines',
+                         line=dict(width=0.5, color='rgb(83, 189, 116)'),
+                         stackgroup='one'))
+    if edlev == 'S':
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(name='Secondary', x=y['Year'], y=y['EvolutionSecondaryS_R'], hoverinfo='x+y',
+                         mode='lines',
+                         line=dict(width=0.5, color='rgb(111, 231, 219)'),
+                         stackgroup='one'))
+    if edlev == 'H':
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(name='High', x=y['Year'], y=y['EvolutionHighS_R'], hoverinfo='x+y',
+                                 mode='lines',
+                                 line=dict(width=0.5, color='rgb(191, 86, 123)'),
+                                 stackgroup='one'))
+    return fig
