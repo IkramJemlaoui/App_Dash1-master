@@ -112,7 +112,11 @@ html.Br(),
     dbc.Row([
     dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='t72', figure={})])),width=6) ,
     dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='t62', figure={})])), width=6)
-    ],align='center'
+    ],align='center'),
+    dbc.Row([
+        dbc.Col(dbc.Card(dbc.CardBody([dcc.Graph(id='bar_h', figure={})])), width=6),
+
+    ], align='center'
   ),
 
 
@@ -144,8 +148,6 @@ def update_map(num_clicks, val_selected, edlev):
                                    center={"lat": 45.5517, "lon": -73.7073},
                                    mapbox_style="carto-positron", zoom=9)
         fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-
-
         return  fig
 
 @app.callback(
@@ -166,8 +168,11 @@ def update_bar_chart(num_clicks,val_selected,edlev):
 
     mask1 = df["Year"] == str(val_selected)
     mask2 = df["Year"] == str(int(val_selected)-1)
+
     df0=df[mask1]
+    df0 = df0.sort_values(x1, ascending=False)
     df1=df[mask2]
+    df1 = df1.sort_values(x1, ascending=False)
     trace1 = go.Bar(  # setup the chart for the selected year
         x=df0["Region"].unique(),  # x for the selected year
         y=df0[x1],  # y for the selected year
@@ -282,9 +287,6 @@ def update_pie_chart(num_clicks,val_selected,edlev):
         paper_bgcolor='rgba(0, 0, 0, 0)',
     )
     return fig
-
-
-
 #----------------------------AREA_chart_FUNCTION------------------------------
 @app.callback(
     Output("area", "figure"),
@@ -313,3 +315,26 @@ def update_area_chart(edlev):
     )
     return fig
 
+#----------------------------------------bar_horizontale-------------------
+@app.callback(
+    Output(component_id='bar_h', component_property='figure'),
+    [Input(component_id='submit_button2', component_property='n_clicks')],
+    [State(component_id='input_state2', component_property='value')],
+    [State(component_id='el2', component_property='value')],)
+def update_bar_h_chart(num_clicks,val_selected,edlev):
+    mask = df["Year"] == str(val_selected)
+
+    if edlev == 'P':
+        x1 = 'EffectifsPrimaryS_R'
+    if edlev == 'S':
+        x1 = 'EffectifsSecondaryS_R'
+    if edlev == 'H':
+        x1 = 'EffectifsSQ_R'
+    a = df.sort_values(x1, ascending=True)
+    fig = px.bar(a[mask], x=x1, y="Region",range_y=[7,11] ,orientation='h')
+    fig.update_layout(
+                      template='plotly_dark',
+                      plot_bgcolor='rgba(0, 0, 0, 0)',
+                      paper_bgcolor='rgba(0, 0, 0, 0)',
+                      )
+    return fig

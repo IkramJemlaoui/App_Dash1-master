@@ -6,7 +6,7 @@ from dash.dependencies import Input, Output
 from app import app
 from app import server
 # Connect to your app pages
-from apps import test_page1, test_page2, home_page, test_page3, province,map2015 , map2014, provincetta15
+from apps import test_page1, test_page2, home_page, test_page3, province,map2015 , map2014, provincetta15, provine_ma_15
 from dash_extensions import Lottie
 import dash_bootstrap_components as dbc
 
@@ -35,6 +35,8 @@ sidebar = html.Div(
                     [dbc.DropdownMenuItem(dbc.NavLink("Province", href="/apps/prov", active="exact"),
                                           style={'font-size': '20px'}),
                      dbc.DropdownMenuItem(dbc.NavLink("provincetta15", href="/apps/prov15", active="exact"),
+                                          style={'font-size': '20px'}),
+                    dbc.DropdownMenuItem(dbc.NavLink("provincetma15", href="/apps/provma15", active="exact"),
                                           style={'font-size': '20px'}),
                      ],
                     label="Province",
@@ -68,6 +70,8 @@ def display_page(pathname):
         return map2014.layout
     if pathname == '/apps/prov15':
         return provincetta15.layout
+    if pathname == '/apps/provma15':
+        return provine_ma_15.layout
     else:
         return home_page.layout
 
